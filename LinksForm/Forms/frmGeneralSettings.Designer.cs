@@ -30,16 +30,19 @@
         {
             this.lblApplicationBehaviour = new System.Windows.Forms.Label();
             this.chkTopMost = new System.Windows.Forms.CheckBox();
-            this.chkWaitForNetwork = new System.Windows.Forms.CheckBox();
             this.lblStartupOptions = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lblGeneralSettingsText = new System.Windows.Forms.Label();
             this.lblGeneralSettingsTitle = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.lblGeneralSettingsText = new System.Windows.Forms.Label();
+            this.lblWaitForNetworkMinutes1 = new System.Windows.Forms.Label();
+            this.cmbWaitForNetwork = new System.Windows.Forms.ComboBox();
+            this.grpSeparator2 = new System.Windows.Forms.GroupBox();
+            this.grpSeparator1 = new System.Windows.Forms.GroupBox();
             this.btnExit = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
-            this.grpSeparator1 = new System.Windows.Forms.GroupBox();
-            this.grpSeparator2 = new System.Windows.Forms.GroupBox();
+            this.chkStartup = new System.Windows.Forms.CheckBox();
+            this.chkWaitForNetwork = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -67,18 +70,6 @@
             this.chkTopMost.Text = "The Links window is top most";
             this.chkTopMost.UseVisualStyleBackColor = true;
             // 
-            // chkWaitForNetwork
-            // 
-            this.chkWaitForNetwork.AutoSize = true;
-            this.chkWaitForNetwork.Checked = true;
-            this.chkWaitForNetwork.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkWaitForNetwork.Location = new System.Drawing.Point(36, 42);
-            this.chkWaitForNetwork.Name = "chkWaitForNetwork";
-            this.chkWaitForNetwork.Size = new System.Drawing.Size(104, 17);
-            this.chkWaitForNetwork.TabIndex = 4;
-            this.chkWaitForNetwork.Text = "Wait for network";
-            this.chkWaitForNetwork.UseVisualStyleBackColor = true;
-            // 
             // lblStartupOptions
             // 
             this.lblStartupOptions.AutoSize = true;
@@ -101,6 +92,17 @@
             this.panel1.Size = new System.Drawing.Size(398, 50);
             this.panel1.TabIndex = 1;
             // 
+            // lblGeneralSettingsText
+            // 
+            this.lblGeneralSettingsText.AutoSize = true;
+            this.lblGeneralSettingsText.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblGeneralSettingsText.ForeColor = System.Drawing.Color.Black;
+            this.lblGeneralSettingsText.Location = new System.Drawing.Point(114, 17);
+            this.lblGeneralSettingsText.Name = "lblGeneralSettingsText";
+            this.lblGeneralSettingsText.Size = new System.Drawing.Size(209, 13);
+            this.lblGeneralSettingsText.TabIndex = 7;
+            this.lblGeneralSettingsText.Text = "Set up all the basics you need to use Links";
+            // 
             // lblGeneralSettingsTitle
             // 
             this.lblGeneralSettingsTitle.AutoSize = true;
@@ -116,10 +118,13 @@
             // 
             this.panel2.BackColor = System.Drawing.Color.WhiteSmoke;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.chkWaitForNetwork);
+            this.panel2.Controls.Add(this.chkStartup);
+            this.panel2.Controls.Add(this.lblWaitForNetworkMinutes1);
+            this.panel2.Controls.Add(this.cmbWaitForNetwork);
             this.panel2.Controls.Add(this.grpSeparator2);
             this.panel2.Controls.Add(this.grpSeparator1);
             this.panel2.Controls.Add(this.lblStartupOptions);
-            this.panel2.Controls.Add(this.chkWaitForNetwork);
             this.panel2.Controls.Add(this.chkTopMost);
             this.panel2.Controls.Add(this.lblApplicationBehaviour);
             this.panel2.Location = new System.Drawing.Point(6, 63);
@@ -127,16 +132,46 @@
             this.panel2.Size = new System.Drawing.Size(398, 211);
             this.panel2.TabIndex = 2;
             // 
-            // lblGeneralSettingsText
+            // lblWaitForNetworkMinutes1
             // 
-            this.lblGeneralSettingsText.AutoSize = true;
-            this.lblGeneralSettingsText.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblGeneralSettingsText.ForeColor = System.Drawing.Color.Black;
-            this.lblGeneralSettingsText.Location = new System.Drawing.Point(114, 17);
-            this.lblGeneralSettingsText.Name = "lblGeneralSettingsText";
-            this.lblGeneralSettingsText.Size = new System.Drawing.Size(209, 13);
-            this.lblGeneralSettingsText.TabIndex = 7;
-            this.lblGeneralSettingsText.Text = "Set up all the basics you need to use Links";
+            this.lblWaitForNetworkMinutes1.AutoSize = true;
+            this.lblWaitForNetworkMinutes1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblWaitForNetworkMinutes1.ForeColor = System.Drawing.Color.Black;
+            this.lblWaitForNetworkMinutes1.Location = new System.Drawing.Point(243, 44);
+            this.lblWaitForNetworkMinutes1.Name = "lblWaitForNetworkMinutes1";
+            this.lblWaitForNetworkMinutes1.Size = new System.Drawing.Size(43, 13);
+            this.lblWaitForNetworkMinutes1.TabIndex = 9;
+            this.lblWaitForNetworkMinutes1.Text = "minutes";
+            // 
+            // cmbWaitForNetwork
+            // 
+            this.cmbWaitForNetwork.FormattingEnabled = true;
+            this.cmbWaitForNetwork.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"});
+            this.cmbWaitForNetwork.Location = new System.Drawing.Point(205, 41);
+            this.cmbWaitForNetwork.Name = "cmbWaitForNetwork";
+            this.cmbWaitForNetwork.Size = new System.Drawing.Size(32, 21);
+            this.cmbWaitForNetwork.TabIndex = 8;
+            // 
+            // grpSeparator2
+            // 
+            this.grpSeparator2.Location = new System.Drawing.Point(22, 103);
+            this.grpSeparator2.Name = "grpSeparator2";
+            this.grpSeparator2.Size = new System.Drawing.Size(355, 10);
+            this.grpSeparator2.TabIndex = 7;
+            this.grpSeparator2.TabStop = false;
+            // 
+            // grpSeparator1
+            // 
+            this.grpSeparator1.Location = new System.Drawing.Point(22, 25);
+            this.grpSeparator1.Name = "grpSeparator1";
+            this.grpSeparator1.Size = new System.Drawing.Size(355, 10);
+            this.grpSeparator1.TabIndex = 6;
+            this.grpSeparator1.TabStop = false;
             // 
             // btnExit
             // 
@@ -158,21 +193,30 @@
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // grpSeparator1
+            // chkStartup
             // 
-            this.grpSeparator1.Location = new System.Drawing.Point(22, 25);
-            this.grpSeparator1.Name = "grpSeparator1";
-            this.grpSeparator1.Size = new System.Drawing.Size(355, 10);
-            this.grpSeparator1.TabIndex = 6;
-            this.grpSeparator1.TabStop = false;
+            this.chkStartup.AutoSize = true;
+            this.chkStartup.Checked = true;
+            this.chkStartup.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkStartup.Location = new System.Drawing.Point(36, 67);
+            this.chkStartup.Name = "chkStartup";
+            this.chkStartup.Size = new System.Drawing.Size(181, 17);
+            this.chkStartup.TabIndex = 11;
+            this.chkStartup.Text = "Start Links when I start Windows";
+            this.chkStartup.UseVisualStyleBackColor = true;
             // 
-            // grpSeparator2
+            // chkWaitForNetwork
             // 
-            this.grpSeparator2.Location = new System.Drawing.Point(22, 103);
-            this.grpSeparator2.Name = "grpSeparator2";
-            this.grpSeparator2.Size = new System.Drawing.Size(355, 10);
-            this.grpSeparator2.TabIndex = 7;
-            this.grpSeparator2.TabStop = false;
+            this.chkWaitForNetwork.AutoSize = true;
+            this.chkWaitForNetwork.Checked = true;
+            this.chkWaitForNetwork.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkWaitForNetwork.Location = new System.Drawing.Point(36, 44);
+            this.chkWaitForNetwork.Name = "chkWaitForNetwork";
+            this.chkWaitForNetwork.Size = new System.Drawing.Size(169, 17);
+            this.chkWaitForNetwork.TabIndex = 12;
+            this.chkWaitForNetwork.Text = "Wait for network on startup for";
+            this.chkWaitForNetwork.UseVisualStyleBackColor = true;
+            this.chkWaitForNetwork.CheckedChanged += new System.EventHandler(this.chkWaitForNetwork_CheckedChanged);
             // 
             // frmGeneralSettings
             // 
@@ -201,7 +245,6 @@
         #endregion
         private System.Windows.Forms.CheckBox chkTopMost;
         private System.Windows.Forms.Label lblApplicationBehaviour;
-        private System.Windows.Forms.CheckBox chkWaitForNetwork;
         private System.Windows.Forms.Label lblStartupOptions;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
@@ -211,5 +254,9 @@
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.GroupBox grpSeparator2;
         private System.Windows.Forms.GroupBox grpSeparator1;
+        private System.Windows.Forms.ComboBox cmbWaitForNetwork;
+        private System.Windows.Forms.Label lblWaitForNetworkMinutes1;
+        private System.Windows.Forms.CheckBox chkWaitForNetwork;
+        private System.Windows.Forms.CheckBox chkStartup;
     }
 }

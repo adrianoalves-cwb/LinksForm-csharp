@@ -63,13 +63,37 @@ namespace Links.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Active,6000")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public string ApplicationWaitForNetworkMinutes {
+            get {
+                return ((string)(this["ApplicationWaitForNetworkMinutes"]));
+            }
+            set {
+                this["ApplicationWaitForNetworkMinutes"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("true")]
         public string ApplicationWaitForNetwork {
             get {
                 return ((string)(this["ApplicationWaitForNetwork"]));
             }
             set {
                 this["ApplicationWaitForNetwork"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("true")]
+        public string StartLinksWhenWindowsIsStarted {
+            get {
+                return ((string)(this["StartLinksWhenWindowsIsStarted"]));
+            }
+            set {
+                this["StartLinksWhenWindowsIsStarted"] = value;
             }
         }
     }

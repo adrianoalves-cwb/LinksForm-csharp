@@ -28,8 +28,8 @@
     <MinimumRequiredVersion>1.0.2.14</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>4</ApplicationRevision>
-    <ApplicationVersion>1.1.0.4</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.1.1.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -43,6 +43,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -73,6 +74,10 @@
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>LinksForm_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -159,12 +164,6 @@
     <Compile Include="Forms\frmAddOrUpdateContact.Designer.cs">
       <DependentUpon>frmAddOrUpdateContact.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmShowDealerContacts.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\frmShowDealerContacts.Designer.cs">
-      <DependentUpon>frmShowDealerContacts.cs</DependentUpon>
-    </Compile>
     <Compile Include="Model\Application.cs" />
     <Compile Include="Model\AppLinks.cs" />
     <Compile Include="Model\AppVersion.cs" />
@@ -176,6 +175,7 @@
     <Compile Include="Model\DealerContact.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
     <EmbeddedResource Include="FormsAdmin\frmUpdatePassword.resx">
       <DependentUpon>frmUpdatePassword.cs</DependentUpon>
     </EmbeddedResource>
@@ -230,9 +230,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Forms\frmShowDealerContacts.resx">
-      <DependentUpon>frmShowDealerContacts.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

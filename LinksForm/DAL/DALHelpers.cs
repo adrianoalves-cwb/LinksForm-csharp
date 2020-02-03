@@ -168,8 +168,6 @@ namespace LinksForm.DAL
                 throw;
             }
         }
-
-        //ADDING A NEW CONTACT TO THE DB
         public static bool AddContact(Contact contact)
         {
             try
@@ -587,6 +585,59 @@ namespace LinksForm.DAL
 
         #region "DEALERS"
 
+       public static List<Dealer> GetDealers()
+        {
+            try
+            {
+                OleDbConnection connection = new OleDbConnection();
+                connection = OpenDBConnection();
+
+                OleDbCommand command = new OleDbCommand();
+                command.Connection = connection;
+
+                command.CommandText = "SELECT d.DealerId, d.DealerName, d.Branch, d.CountryId, d.CTDI, d.CNPJ, c.CountryName, d.PhoneNumber, d.IsActive, d.MainDealerId, d.BaldoPartner FROM Dealers d INNER JOIN Countries c ON d.CountryId = c.CountryId";
+
+                OleDbDataReader reader = command.ExecuteReader();
+
+                var dealerList = new List<Dealer>();
+
+                var columns = new List<string>();
+
+                //for (int i = 0; i < reader.FieldCount; i++)
+                //{
+                //    columns.Add(reader.GetName(i));
+                //}
+
+                while (reader.Read())
+                {
+
+                    Dealer dealer = new Dealer();
+
+                    dealer.DealerId = Convert.ToInt32(reader["DealerId"]);
+                    dealer.DealerName = reader["DealerName"].ToString();
+                    dealer.Branch = reader["Branch"].ToString();
+                    dealer.CountryId = Convert.ToInt32(reader["CountryId"]);
+                    dealer.CTDI = reader["CTDI"].ToString();
+                    dealer.CNPJ = reader["CNPJ"].ToString();
+                    dealer.CountryName = reader["CountryName"].ToString();
+                    dealer.PhoneNumber = reader["PhoneNumber"].ToString();
+                    dealer.IsActive = Convert.ToInt32(reader["IsActive"]);
+                    dealer.MainDealerId = Convert.ToInt32(reader["MainDealerId"]);
+                    dealer.BaldoPartner = reader["BaldoPartner"].ToString();
+
+                    dealerList.Add(dealer);
+                }
+
+                CloseDBConnection(connection);
+
+                return dealerList;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public static List<Dealer> GetMainDealersByCountry(int CountryId)
         {
             try
@@ -648,7 +699,13 @@ namespace LinksForm.DAL
                 return false;
             }
         }
-        public static List<Dealer> GetDealers()
+ 
+
+        #endregion
+
+        #region "DEALER CONTACTS"
+
+        public static List<DealerContact> GetDealerContacts()
         {
             try
             {
@@ -658,52 +715,38 @@ namespace LinksForm.DAL
                 OleDbCommand command = new OleDbCommand();
                 command.Connection = connection;
 
-                command.CommandText = "SELECT d.DealerId, d.DealerName, d.Branch, d.CountryId, d.CTDI, d.CNPJ, c.CountryName, d.PhoneNumber, d.IsActive, d.MainDealerId FROM Dealers d INNER JOIN Countries c ON d.CountryId = c.CountryId";
-
+                command.CommandText = "SELECT DISTINCT dc.DealerContactId, dc.MainDealerId, dc.Description, dc.Phone, dc.CellPhone, dc.Email, dc.Department, d.DealerName, c.CountryId, c.CountryName FROM (DealerContacts dc INNER JOIN Dealers d ON dc.MainDealerId = d.MainDealerId) INNER JOIN Countries c ON d.CountryId = c.CountryId";
                 OleDbDataReader reader = command.ExecuteReader();
 
-                var dealerList = new List<Dealer>();
-
-                var columns = new List<string>();
-
-                //for (int i = 0; i < reader.FieldCount; i++)
-                //{
-                //    columns.Add(reader.GetName(i));
-                //}
+                var dealerContactList = new List<DealerContact>();
 
                 while (reader.Read())
                 {
+                    DealerContact dealerContact = new DealerContact();
 
-                    Dealer dealer = new Dealer();
+                    dealerContact.DealerContactId = Convert.ToInt32(reader["DealerContactId"].ToString());
+                    dealerContact.MainDealerId = Convert.ToInt32(reader["MainDealerId"].ToString());
+                    dealerContact.Name = reader["Description"].ToString();
+                    dealerContact.Phone = reader["Phone"].ToString();
+                    dealerContact.CellPhone = reader["CellPhone"].ToString();
+                    dealerContact.Email = reader["Email"].ToString();
+                    dealerContact.Department = reader["Department"].ToString();
+                    dealerContact.DealerName = reader["DealerName"].ToString();
+                    dealerContact.CountryId = Convert.ToInt32(reader["CountryId"].ToString());
+                    dealerContact.Country = reader["CountryName"].ToString();
 
-                    dealer.DealerId = Convert.ToInt32(reader["DealerId"]);
-                    dealer.DealerName = reader["DealerName"].ToString();
-                    dealer.Branch = reader["Branch"].ToString();
-                    dealer.CountryId = Convert.ToInt32(reader["CountryId"]);
-                    dealer.CTDI = reader["CTDI"].ToString();
-                    dealer.CNPJ = reader["CNPJ"].ToString();
-                    dealer.CountryName = reader["CountryName"].ToString();
-                    dealer.PhoneNumber = reader["PhoneNumber"].ToString();
-                    dealer.IsActive = Convert.ToInt32(reader["IsActive"]);
-                    dealer.MainDealerId = Convert.ToInt32(reader["MainDealerId"]);
-
-                    dealerList.Add(dealer);
+                    dealerContactList.Add(dealerContact);
                 }
 
                 CloseDBConnection(connection);
 
-                return dealerList;
+                return dealerContactList;
             }
             catch
             {
                 throw;
             }
         }
-
-        #endregion
-
-        #region "DEALER CONTACTS"
-
         public static List<DealerContact> GetDealerContactByDealerId(int Id)
         {
             try
@@ -726,7 +769,7 @@ namespace LinksForm.DAL
 
                     dealerContact.DealerContactId = Convert.ToInt32(reader["DealerContactId"].ToString());
                     dealerContact.MainDealerId = Convert.ToInt32(reader["MainDealerId"].ToString());
-                    dealerContact.Description = reader["Description"].ToString();
+                    dealerContact.Name = reader["Description"].ToString();
                     dealerContact.Department = reader["Department"].ToString();
                     dealerContact.Phone = reader["Phone"].ToString();
                     dealerContact.CellPhone = reader["CellPhone"].ToString();
@@ -766,7 +809,7 @@ namespace LinksForm.DAL
 
                     dealerContact.DealerContactId = Convert.ToInt32(reader["DealerContactId"].ToString());
                     dealerContact.MainDealerId = Convert.ToInt32(reader["MainDealerId"].ToString());
-                    dealerContact.Description = reader["Description"].ToString();
+                    dealerContact.Name = reader["Description"].ToString();
                     dealerContact.Department = reader["Department"].ToString();
                     dealerContact.Phone = reader["Phone"].ToString();
                     dealerContact.CellPhone = reader["CellPhone"].ToString();
@@ -796,7 +839,7 @@ namespace LinksForm.DAL
 
                 command.CommandText = "INSERT INTO DealerContacts (MainDealerId, Description, Department, Phone, CellPhone, Email) VALUES(@mainDealerid, @description, @department, @phone, @cellPhone, @email)";
                 command.Parameters.AddWithValue("@mainDealerid", dealerContact.MainDealerId);
-                command.Parameters.AddWithValue("@description", dealerContact.Description);
+                command.Parameters.AddWithValue("@description", dealerContact.Name);
                 command.Parameters.AddWithValue("@department", dealerContact.Department);
                 command.Parameters.AddWithValue("@phone", dealerContact.Phone);
                 command.Parameters.AddWithValue("@cellPhone", dealerContact.CellPhone);
@@ -822,7 +865,7 @@ namespace LinksForm.DAL
                 command.Connection = connection;
 
                 command.CommandText = "UPDATE DealerContacts SET Description = @description, Department = @department, Phone = @phone, CellPhone = @cellphone, Email = @email WHERE DealerContactId = @id";
-                command.Parameters.AddWithValue("@description", dealerContact.Description);
+                command.Parameters.AddWithValue("@description", dealerContact.Name);
                 command.Parameters.AddWithValue("@department", dealerContact.Department);
                 command.Parameters.AddWithValue("@phone", dealerContact.Phone);
                 command.Parameters.AddWithValue("@cellPhone", dealerContact.CellPhone);

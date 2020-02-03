@@ -12,8 +12,14 @@
     <Setting Name="ApplicationPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">\\vcn.ds.volvo.net\it-cta\ITPROJ02\002378\DESENV\DBS\AUTOMATOR\LINKS FORM\</Value>
     </Setting>
+    <Setting Name="ApplicationWaitForNetworkMinutes" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
     <Setting Name="ApplicationWaitForNetwork" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Active,6000</Value>
+      <Value Profile="(Default)">true</Value>
+    </Setting>
+    <Setting Name="StartLinksWhenWindowsIsStarted" Type="System.String" Scope="User">
+      <Value Profile="(Default)">true</Value>
     </Setting>
   </Settings>
 </SettingsFile>

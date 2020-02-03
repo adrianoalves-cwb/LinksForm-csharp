@@ -46,6 +46,5 @@ C:\Temp\LinksForm\LinksForm\obj\Release\Links.exe.manifest
 C:\Temp\LinksForm\LinksForm\obj\Release\Links.application
 C:\Temp\LinksForm\LinksForm\obj\Release\Links.exe
 C:\Temp\LinksForm\LinksForm\obj\Release\Links.pdb
-C:\Temp\LinksForm\LinksForm\obj\Release\Links.Forms.frmShowDealerContacts.resources
 C:\Temp\LinksForm\LinksForm\obj\Release\Links.Forms.frmGeneralSettings.resources
-C:\Temp\LinksForm\LinksForm\obj\Release\LinksForm.csprojAssemblyReference.cache
+C:\Temp\LinksForm\LinksForm\obj\Release\Links.FormsAdmin.frmUpdatePassword.resources

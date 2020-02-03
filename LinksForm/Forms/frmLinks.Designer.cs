@@ -40,6 +40,7 @@ namespace LinksForm
             this.txtContacts = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.grpMainDealers = new System.Windows.Forms.GroupBox();
+            this.chkDealerContacts = new System.Windows.Forms.CheckBox();
             this.lblClearDealersSearch = new System.Windows.Forms.Label();
             this.txtDealers = new System.Windows.Forms.TextBox();
             this.dgvDealers = new System.Windows.Forms.DataGridView();
@@ -81,7 +82,6 @@ namespace LinksForm
             this.copyToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripPwdSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.updatePasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tabMain.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.grpContacts.SuspendLayout();
@@ -185,6 +185,7 @@ namespace LinksForm
             // 
             // grpMainDealers
             // 
+            this.grpMainDealers.Controls.Add(this.chkDealerContacts);
             this.grpMainDealers.Controls.Add(this.lblClearDealersSearch);
             this.grpMainDealers.Controls.Add(this.txtDealers);
             this.grpMainDealers.Controls.Add(this.dgvDealers);
@@ -193,6 +194,17 @@ namespace LinksForm
             this.grpMainDealers.Size = new System.Drawing.Size(425, 450);
             this.grpMainDealers.TabIndex = 1;
             this.grpMainDealers.TabStop = false;
+            // 
+            // chkDealerContacts
+            // 
+            this.chkDealerContacts.AutoSize = true;
+            this.chkDealerContacts.Location = new System.Drawing.Point(317, 22);
+            this.chkDealerContacts.Name = "chkDealerContacts";
+            this.chkDealerContacts.Size = new System.Drawing.Size(102, 17);
+            this.chkDealerContacts.TabIndex = 7;
+            this.chkDealerContacts.Text = "Dealer Contacts";
+            this.chkDealerContacts.UseVisualStyleBackColor = true;
+            this.chkDealerContacts.CheckedChanged += new System.EventHandler(this.chkDealerContacts_CheckedChanged);
             // 
             // lblClearDealersSearch
             // 
@@ -228,12 +240,11 @@ namespace LinksForm
             this.dgvDealers.Name = "dgvDealers";
             this.dgvDealers.ReadOnly = true;
             this.dgvDealers.RowHeadersVisible = false;
-            this.dgvDealers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvDealers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvDealers.Size = new System.Drawing.Size(413, 402);
             this.dgvDealers.TabIndex = 3;
             this.dgvDealers.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvDealers_CellMouseDown);
             this.dgvDealers.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvDealers_MouseClick);
-            this.dgvDealers.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dgvDealers_MouseDoubleClick);
             // 
             // tabPage3
             // 
@@ -321,6 +332,7 @@ namespace LinksForm
             this.imageList.Images.SetKeyName(15, "bullet.png");
             this.imageList.Images.SetKeyName(16, "Refresh.png");
             this.imageList.Images.SetKeyName(17, "CogWheel.png");
+            this.imageList.Images.SetKeyName(18, "Volvo.jpg");
             // 
             // txtAppSearch
             // 
@@ -409,7 +421,7 @@ namespace LinksForm
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tspExit,
             this.tspConfig});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 515);
+            this.menuStrip1.Location = new System.Drawing.Point(0, 469);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(449, 32);
             this.menuStrip1.TabIndex = 2;
@@ -655,7 +667,7 @@ namespace LinksForm
         private System.Windows.Forms.ToolStripSeparator toolStripPwdSeparator;
         private System.Windows.Forms.ToolStripMenuItem updatePasswordToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem configurationToolStripMenuItem;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.CheckBox chkDealerContacts;
     }
 }
 

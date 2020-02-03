@@ -14,6 +14,7 @@ using System.Timers;
 using System.Windows.Forms;
 using Links.Forms;
 using Links.FormsAdmin;
+using Links.Model;
 using Links.Properties;
 using LinksForm.Controller;
 using LinksForm.DAL;
@@ -31,6 +32,7 @@ namespace LinksForm
 
         private DataTable dtContacts = new DataTable();
         private DataTable dtDealers = new DataTable();
+        private DataTable dtDealerContacts = new DataTable();
 
         private Dictionary<int, string> PasswordList = new Dictionary<int, string>();
 
@@ -38,8 +40,13 @@ namespace LinksForm
         private List<App> ApplicationsList = new List<App>();
         private List<AppLinks> AppLinksFromDatabase = new List<AppLinks>();
 
+        private List<Contact> contactList = new List<Contact>();
+        private List<DealerContact> dealerContactList = new List<DealerContact>();
+        private List<Dealer> dealerList = new List<Dealer>();
+
         //SEARCH BOXES VARIABLES
         private string FilterContactField = "StringToSearch";
+        private string FilterDealerContactField = "StringToSearch";
         private List<string> CurrentTreeViewNode = new List<string>();
 
         private List<string> links = new List<string>();
@@ -74,52 +81,8 @@ namespace LinksForm
         #region "FORM LOADING"
         private void frmContacts_Load(object sender, EventArgs e)
         {
-
             try
             {
-                #region "TESTING THE NETWORK CONNECTION"
-
-                //TESTING IF THE NETWORK FOLDER CAN BE FOUND. WHEN WORKING FROM HOME, PULSE CAN TAKE A FEW MINUTES TO CONNECT
-                string ApplicationPath = Settings.Default["ApplicationPath"].ToString();
-
-                int counter = 0;
-                bool IsNetworkAvailable = false;
-
-                while (IsNetworkAvailable == false)
-                {
-                    //CHECKING IF THE APPLICATION CAN ACCESS THE SHARED NETWORK FOLDER AND THE DATABASE
-                    if (Directory.Exists(ApplicationPath))
-                    {
-                        //MessageBox.Show("Directory found");
-                        IsNetworkAvailable = true;
-                    }
-                    else
-                    {
-                        
-                        if (counter == Convert.ToInt32(Settings.Default["ApplicationLoadingWaitTime"].ToString()))
-                        {
-                            DialogResult dialog = new DialogResult();
-
-                            dialog = MessageBox.Show("The application is unable to load as the VOLVO NETWORK is unavailable. Click 'YES' to try to load the application again or click 'NO' to cancel and close the application.", "Links - Unable to connect to the Volvo network", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
-
-                            if (dialog == DialogResult.No)
-                            {
-                                notifyIcon.Visible = false;
-                                Environment.Exit(1);
-                            }
-                            else
-                            {
-                                counter = 0;
-                            }
-
-                        }
-                        counter += 1;
-                    }
-                }
-
-
-
-                #endregion
 
                 #region "Get App Version"
 
@@ -151,7 +114,29 @@ namespace LinksForm
                 dtContacts.Columns.Add("Computer Name", typeof(string));
                 dtContacts.Columns.Add("StringToSearch", typeof(string));
 
+                contactList = DALHelpers.GetContacts();
+
                 loadContacts();
+
+                #endregion
+
+                #region "Loading DealerContacts"
+
+                dtDealerContacts.Columns.Add("DealerContactId", typeof(string));
+                dtDealerContacts.Columns.Add("MainDealerId", typeof(string));
+                dtDealerContacts.Columns.Add("Name", typeof(string));
+                dtDealerContacts.Columns.Add("Phone", typeof(string));
+                dtDealerContacts.Columns.Add("CellPhone", typeof(string));
+                dtDealerContacts.Columns.Add("Email", typeof(string));
+                dtDealerContacts.Columns.Add("DealerName", typeof(string));
+                dtDealerContacts.Columns.Add("Department", typeof(string));
+                dtDealerContacts.Columns.Add("CountryId", typeof(string));
+                dtDealerContacts.Columns.Add("CountryName", typeof(string));
+                dtDealerContacts.Columns.Add("StringToSearch", typeof(string));
+
+                dealerContactList = DALHelpers.GetDealerContacts();
+
+                //loadDealerContacts();
 
                 #endregion
 
@@ -161,14 +146,17 @@ namespace LinksForm
                 dtDealers.Columns.Add("Dealer", typeof(string));
                 dtDealers.Columns.Add("Branch", typeof(string));
                 dtDealers.Columns.Add("Phone Number", typeof(string));
+                dtDealers.Columns.Add("CTDI", typeof(string));
+                dtDealers.Columns.Add("BaldoPartner", typeof(string));
                 dtDealers.Columns.Add("CountryId", typeof(string));
                 dtDealers.Columns.Add("Country", typeof(string));
-                dtDealers.Columns.Add("CTDI", typeof(string));
                 dtDealers.Columns.Add("CNPJ", typeof(string));
                 dtDealers.Columns.Add("IsActive", typeof(string));
                 dtDealers.Columns.Add("MainDealerId", typeof(string));
                 dtDealers.Columns.Add("StringToSearch", typeof(string));
                 dtDealers.Columns.Add("Sort", typeof(string));
+
+                dealerList = DALHelpers.GetDealers();
 
                 loadDealers();
 
@@ -197,7 +185,6 @@ namespace LinksForm
             {
                 MessageBox.Show("Error : " + ex.Message);
             }
-
         }
 
         #endregion
@@ -238,12 +225,9 @@ namespace LinksForm
         #endregion
 
         #region "LOADING CONTACTS
+
         private void loadContacts()
         {
-            var contactList = new List<Contact>();
-
-            contactList = DALHelpers.GetContacts();
-
             dgvContacts.DataSource = null;
             dgvContacts.Rows.Clear();
             dtContacts.Clear();
@@ -280,50 +264,90 @@ namespace LinksForm
 
         #endregion
 
+        #region "LOADING DEALER CONTACTS"
+        private void loadDealerContacts()
+        {
+            dgvDealers.DataSource = null;
+            dgvDealers.Rows.Clear();
+            dtDealerContacts.Clear();
+
+            foreach (DealerContact dealerContact in dealerContactList)
+            {
+                dtDealerContacts.Rows.Add(
+                    dealerContact.DealerContactId.ToString(),
+                    dealerContact.MainDealerId.ToString(),
+                    dealerContact.Name.ToString(),
+                    dealerContact.Phone.ToString(),
+                    dealerContact.CellPhone.ToString(),
+                    dealerContact.Email.ToString(),
+                    dealerContact.DealerName.ToString(),
+                    dealerContact.Department.ToString(),
+                    dealerContact.CountryId.ToString(),
+                    dealerContact.Country.ToString(),
+                    dealerContact.Name.ToString() + dealerContact.DealerName.ToString() + Validation.RemoveDiacritics(dealerContact.DealerName.ToString())+ Validation.RemoveDiacritics(dealerContact.Name.ToString()) + Validation.RemoveDiacritics(dealerContact.Department.ToString()) + dealerContact.Department.ToString() + dealerContact.Phone.ToString() + dealerContact.CellPhone.ToString() + dealerContact.Country.ToString() + dealerContact.Email.ToString());
+            }
+
+            dgvDealers.DataSource = dtDealerContacts;
+
+            dgvDealers.Columns[0].Visible = false;
+            dgvDealers.Columns[1].Visible = false;
+            dgvDealers.Columns[8].Visible = false;
+            dgvDealers.Columns[10].Visible = false;
+
+            dgvDealers.Columns[2].Width = 150;
+            dgvDealers.Columns[3].Width = 130;
+            dgvDealers.Columns[4].Width = 130;
+            dgvDealers.Columns[5].Width = 180;
+            dgvDealers.Columns[6].Width = 180;
+            dgvDealers.Columns[7].Width = 130;
+            dgvDealers.Columns[9].Width = 50;
+
+            dgvDealers.Sort(dgvDealers.Columns["DealerName"], ListSortDirection.Ascending);
+
+            dgvDealers.ClearSelection();
+        }
+        #endregion
+
         #region "LOADING DEALERS"
         private void loadDealers()
         {
-            var dealerList = new List<Dealer>();
-
-            dealerList = DALHelpers.GetDealers();
-
             dgvDealers.DataSource = null;
             dgvDealers.Rows.Clear();
             dtDealers.Clear();
 
             foreach (Dealer dealer in dealerList)
             {
-
                 dtDealers.Rows.Add(
                     dealer.DealerId.ToString(),
                     dealer.DealerName.ToString(),
                     dealer.Branch.ToString(),
                     dealer.PhoneNumber.ToString(),
+                    dealer.CTDI.ToString(),
+                    dealer.BaldoPartner.ToString(),
                     dealer.CountryId.ToString(),
                     dealer.CountryName.ToString(),
-                    dealer.CTDI.ToString(),
                     dealer.CNPJ.ToString(),
                     dealer.IsActive.ToString(),
                     dealer.MainDealerId.ToString(),
-                    dealer.CTDI.ToString() + dealer.PhoneNumber.ToString() + dealer.CountryName.ToString() + dealer.DealerName.ToString() + Validation.RemoveDiacritics(dealer.DealerName.ToString()) + dealer.Branch.ToString() + Validation.RemoveDiacritics(dealer.Branch.ToString()),
+                    dealer.CTDI.ToString() + dealer.PhoneNumber.ToString() + dealer.BaldoPartner.ToString() + dealer.CountryName.ToString() + dealer.DealerName.ToString() + Validation.RemoveDiacritics(dealer.DealerName.ToString()) + dealer.Branch.ToString() + Validation.RemoveDiacritics(dealer.Branch.ToString()),
                     dealer.DealerName.ToString() + dealer.Branch.ToString());
             }
 
             dgvDealers.DataSource = dtDealers;
 
             dgvDealers.Columns[0].Visible = false;
-            dgvDealers.Columns[4].Visible = false;
             dgvDealers.Columns[6].Visible = false;
-            dgvDealers.Columns[7].Visible = false;
             dgvDealers.Columns[8].Visible = false;
             dgvDealers.Columns[9].Visible = false;
             dgvDealers.Columns[10].Visible = false;
             dgvDealers.Columns[11].Visible = false;
+            dgvDealers.Columns[12].Visible = false;
 
             dgvDealers.Columns[1].Width = 150;
             dgvDealers.Columns[2].Width = 150;
             dgvDealers.Columns[3].Width = 110;
-            dgvDealers.Columns[5].Width = 70;
+            dgvDealers.Columns[4].Width = 50;
+            dgvDealers.Columns[7].Width = 70;
 
             dgvDealers.Sort(dgvDealers.Columns["Sort"], ListSortDirection.Ascending);
         }
@@ -449,20 +473,44 @@ namespace LinksForm
 
         private void txtContacts_TextChanged(object sender, EventArgs e)
         {
-            //txtContacts.Text = string.Concat(txtContacts.Text.Where(char.IsLetterOrDigit));
-            //dtContacts.DefaultView.RowFilter = string.Format("[{0}] LIKE '%{1}%'", FilterContactField, txtContacts.Text);
+            //string oldText = string.Empty;
+
+            //oldText = txtContacts.Text;
+
+            //if (string.IsNullOrEmpty(txtContacts.Text))
+            //{
+            //    lblClearContactsSearch.Visible = false;
+            //}
+            //else
+            //{
+            //    lblClearContactsSearch.Visible = true;
+            //}
+
+            //if ((txtContacts.Text.All(chr => char.IsLetterOrDigit(chr))) || (txtContacts.Text.Contains(" ")) || (txtContacts.Text.Contains("-")) || (txtContacts.Text.Contains("(")) || (txtContacts.Text.Contains(")")))
+            //{
+            //    txtContacts.Text = oldText;
+            //}
+            //else
+            //{
+            //    txtContacts.Text = oldText.Remove(oldText.Length -1);
+            //}
+
+            //txtContacts.SelectionStart = txtContacts.Text.Length;
+
 
             string oldText = string.Empty;
 
-            if ((txtContacts.Text.All(chr => char.IsLetterOrDigit(chr))) || (txtContacts.Text.Contains(" ")) || (txtContacts.Text.Contains("-")) || (txtContacts.Text.Contains("(")) || (txtContacts.Text.Contains(")")))
+            oldText = txtContacts.Text;
+
+            if ((txtContacts.Text.All(chr => char.IsLetterOrDigit(chr))) || (txtContacts.Text.Contains(" ")) || (txtContacts.Text.Contains("-")) || (txtContacts.Text.Contains(".")))
             {
-                oldText = txtContacts.Text;
                 txtContacts.Text = oldText;
             }
             else
             {
-                txtContacts.Text = oldText;
+                txtContacts.Text = oldText.Remove(oldText.Length - 1);
             }
+
             txtContacts.SelectionStart = txtContacts.Text.Length;
 
             dtContacts.DefaultView.RowFilter = string.Format("[{0}] LIKE '%{1}%'", FilterContactField, txtContacts.Text);
@@ -475,6 +523,7 @@ namespace LinksForm
             {
                 lblClearContactsSearch.Visible = true;
             }
+
         }
         private void lblClearContactsSearch_Click(object sender, EventArgs e)
         {
@@ -511,6 +560,7 @@ namespace LinksForm
                 }
             }
         }
+
         private void dgvContacts_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
@@ -574,26 +624,44 @@ namespace LinksForm
         {
             string oldText = string.Empty;
 
+            oldText = txtDealers.Text;
+
             if ((txtDealers.Text.All(chr => char.IsLetterOrDigit(chr))) || (txtDealers.Text.Contains(" ")) || (txtDealers.Text.Contains("-")) || (txtDealers.Text.Contains(".")))
             {
-                oldText = txtDealers.Text;
                 txtDealers.Text = oldText;
             }
             else
             {
-                txtDealers.Text = oldText;
+                txtDealers.Text = oldText.Remove(oldText.Length - 1);
             }
+
             txtDealers.SelectionStart = txtDealers.Text.Length;
 
-            dtDealers.DefaultView.RowFilter = string.Format("[{0}] LIKE '%{1}%'", FilterContactField, txtDealers.Text);
-
-            if (string.IsNullOrEmpty(txtDealers.Text))
+            if (chkDealerContacts.Checked == true)
             {
-                lblClearDealersSearch.Visible = false;
+                dtDealerContacts.DefaultView.RowFilter = string.Format("[{0}] LIKE '%{1}%'", FilterDealerContactField, txtDealers.Text);
+
+                if (string.IsNullOrEmpty(txtDealers.Text))
+                {
+                    lblClearDealersSearch.Visible = false;
+                }
+                else
+                {
+                    lblClearDealersSearch.Visible = true;
+                }
             }
             else
             {
-                lblClearDealersSearch.Visible = true;
+                dtDealers.DefaultView.RowFilter = string.Format("[{0}] LIKE '%{1}%'", FilterDealerContactField, txtDealers.Text);
+
+                if (string.IsNullOrEmpty(txtDealers.Text))
+                {
+                    lblClearDealersSearch.Visible = false;
+                }
+                else
+                {
+                    lblClearDealersSearch.Visible = true;
+                }
             }
         }
 
@@ -613,31 +681,15 @@ namespace LinksForm
         {
             lblClearDealersSearch.ForeColor = Color.Gray;
         }
-        private void dgvDealers_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void chkDealerContacts_CheckedChanged(object sender, EventArgs e)
         {
-            int MainDealerId;
-            string DealerName;
-            string Branch;
-            string CTDI;
-            string CNPJ;
-            int CountryId;
-
-            MainDealerId = Convert.ToInt32(dgvDealers.CurrentRow.Cells[9].Value.ToString());
-            DealerName = dgvDealers.CurrentRow.Cells[1].Value.ToString();
-            Branch = dgvDealers.CurrentRow.Cells[2].Value.ToString();
-            CTDI = dgvDealers.CurrentRow.Cells[6].Value.ToString();
-            CNPJ = dgvDealers.CurrentRow.Cells[7].Value.ToString();
-            CountryId = Convert.ToInt32(dgvDealers.CurrentRow.Cells[4].Value.ToString());
-
-            if (MainDealerId > 0)
+            if (chkDealerContacts.Checked == true)
             {
-                frmShowDealerContacts _frmShowDealerContacts = new frmShowDealerContacts(MainDealerId, DealerName, Branch, CNPJ, CTDI, CountryId);
-
-                this.TopMost = false;
-                _frmShowDealerContacts.StartPosition = FormStartPosition.CenterParent;
-                _frmShowDealerContacts.ShowDialog();
-                _frmShowDealerContacts.Dispose();
-                this.TopMost = true;
+                loadDealerContacts();
+            }
+            else
+            {
+                loadDealers();
             }
         }
 
@@ -914,15 +966,18 @@ namespace LinksForm
 
             string oldText = string.Empty;
 
+            oldText = txtAppSearch.Text;
+
             if ((txtAppSearch.Text.All(chr => char.IsLetterOrDigit(chr))) || (txtAppSearch.Text.Contains(" ")) || (txtAppSearch.Text.Contains("-")) || (txtAppSearch.Text.Contains(".")))
             {
-                oldText = txtAppSearch.Text;
+
                 txtAppSearch.Text = oldText;
             }
             else
             {
-                txtAppSearch.Text = oldText;
+                txtAppSearch.Text = oldText.Remove(oldText.Length -1);
             }
+
             txtAppSearch.SelectionStart = txtAppSearch.Text.Length;
 
 
@@ -1051,6 +1106,7 @@ namespace LinksForm
         #endregion
 
         #region "FUNCTIONS"
+
         private void addToLinks(string stringToCompare)
         {
             var found = false;

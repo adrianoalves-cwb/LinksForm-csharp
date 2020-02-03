@@ -24,7 +24,6 @@ C:\Temp\LinksForm\LinksForm\bin\Debug\EntityFramework.dll
 C:\Temp\LinksForm\LinksForm\bin\Debug\EntityFramework.SqlServer.dll
 C:\Temp\LinksForm\LinksForm\bin\Debug\EntityFramework.xml
 C:\Temp\LinksForm\LinksForm\bin\Debug\EntityFramework.SqlServer.xml
-C:\Temp\LinksForm\LinksForm\obj\Debug\LinksForm.csprojAssemblyReference.cache
 C:\Temp\LinksForm\LinksForm\obj\Debug\LinksForm.Forms.frmAddOrUpdateApplication.resources
 C:\Temp\LinksForm\LinksForm\obj\Debug\LinksForm.Forms.frmAddOrUpdateAppLinks.resources
 C:\Temp\LinksForm\LinksForm\obj\Debug\LinksForm.Forms.frmAddOrUpdateCredential.resources
@@ -46,6 +45,6 @@ C:\Temp\LinksForm\LinksForm\obj\Debug\Links.application
 C:\Temp\LinksForm\LinksForm\obj\Debug\Links.exe
 C:\Temp\LinksForm\LinksForm\obj\Debug\Links.pdb
 C:\Temp\LinksForm\LinksForm\obj\Debug\Links.Forms.frmAbout.resources
-C:\Temp\LinksForm\LinksForm\obj\Debug\Links.Forms.frmShowDealerContacts.resources
 C:\Temp\LinksForm\LinksForm\obj\Debug\Links.Forms.frmGeneralSettings.resources
 C:\Temp\LinksForm\LinksForm\obj\Debug\Links.FormsAdmin.frmUpdatePassword.resources
+C:\Temp\LinksForm\LinksForm\obj\Debug\LinksForm.csprojAssemblyReference.cache
