@@ -9,7 +9,7 @@ namespace LinksForm.Controller
 {
     class Encryption
     {
-        static string key { get; set; } = "A!9HHhi%XjjYY4YP2@Nob009X";
+        static string key { get; set; } = "***********************************";
         public static string Encrypt(string text)
         {
             using (var md5 = new MD5CryptoServiceProvider())
